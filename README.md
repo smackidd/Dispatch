@@ -19,7 +19,7 @@ The app will help make the process of managing events and following the progress
 ## Project Overview
 #Organization Entity
 
-•	The Organization can add and delete Managers to their list of Managers available to handle events.
+•	The Organization can add and delete Managers to their list of Managers available to handle events. </br>
 •	The Organization can create an event with Name, Location, Time, Special Requirements and can assign it to a Manager. The Organization can also view a list of task templates created by the Manager and attach the template to the event. These templates will contain preset tasks, alerts and other parameters that are commonly repeated with specific types of event.
 •	The Organization can view a list of upcoming, in progress and completed events that it has already created. The Organization can open an event to see the status of tasks associated with the event and any comments/feedback about the event.
 •	The Organization can send messages to Managers. Managers can send messages to Organizations and Freelancers. Freelancers can send messages to Managers. Freelancers  and Organizations cannot message each other.
