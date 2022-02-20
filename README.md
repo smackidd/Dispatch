@@ -37,5 +37,6 @@ FREELANCER ENTITY
 •	The Freelancer can accept or decline events assigned to them. They can also view a list of unassigned events associated with Managers they are connected with and accept the unassigned event. The Manager will have an option to reject the Freelancer who has picked up the unassigned event.</br>
 •	The Freelancer can view a schedule of upcoming, in progress and completed events. They can open an event to view details of the event, including a list of tasks and comments about the event. </br>
 •	The Freelancer can open an in progress event where a task list will be displayed. When a task is complete, the Freelancer can swipe left on the task to update the status of that task. The status will then be sent to the Manager.</br>
-<img align = "left" alt="Complete Task" width = 720px src = "https://media.giphy.com/media/zqdAKEKM5Pyqniu0qS/giphy.gif" /> </br>
+<img align = "left" alt="Complete Task" width = 512px src = "https://media.giphy.com/media/zqdAKEKM5Pyqniu0qS/giphy.gif" /> 
+</br>
 •	The Freelancer can leave comments about the event re: issues, improvements, etc.</br>
