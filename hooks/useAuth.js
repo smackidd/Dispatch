@@ -28,7 +28,7 @@ export const AuthProvider = ({ children }) => {
         //Logged in...
         const docSnap = await getDoc(doc(db, 'users', user.uid))
           .catch(error => alert(error.message))
-        setUser({ ...user, displayName: docSnap.data()?.displayName, photoURL: docSnap.data()?.photoURL, role: docSnap.data()?.role });
+        setUser({ ...user, displayName: docSnap.data()?.displayName, photoURL: docSnap.data()?.photoURL, role: docSnap.data()?.role, expoPushToken: docSnap.data()?.expoPushToken });
       } else {
         setUser(null);
       }
@@ -61,9 +61,9 @@ export const AuthProvider = ({ children }) => {
       .finally(() => setLoading(false));
   }
 
-  const updateProfile = (displayName, role, photoURL) => {
+  const updateProfile = (displayName, role, photoURL, expoPushToken) => {
 
-    setUser({ ...user, displayName, photoURL, role })
+    setUser({ ...user, displayName, photoURL, role, expoPushToken })
   }
 
   const memoedValue = useMemo(() => ({

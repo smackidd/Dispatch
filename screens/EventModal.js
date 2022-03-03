@@ -63,12 +63,13 @@ const EventModal = () => {
     await addDoc(newAlertRef, {
       timestamp: serverTimestamp(),
       alertType: 'default',
+      title: 'Event Invite Accepted',
       message: `${user.displayName} (${user.role}) has confirmed event: ${event.title}, ${event.date} ${event.startTime}`,
       isViewed: false,
       relevantInfo: null
     })
 
-    navigation.goBack();
+    navigation.navigate('Alerts');
   }
 
   const handleReject = async () => {
@@ -104,6 +105,7 @@ const EventModal = () => {
     await addDoc(newAlertRef, {
       timestamp: serverTimestamp(),
       alertType: 'rejectedEvent',
+      title: 'Event Invited Rejected',
       message: `${user.displayName} (${user.role}) has REJECTED event: ${event.title}, ${event.date} ${event.startTime}`,
       isViewed: false,
       relevantInfo: null

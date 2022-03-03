@@ -31,6 +31,7 @@ const ConnectionAlert = ({ alert }) => {
     await addDoc(newAlertRef, {
       timestamp: serverTimestamp(),
       alertType: 'default',
+      title: 'Contact Accepted Invite',
       message: `${user.displayName} (${user.role}) has confirmed contact.`,
       isViewed: false,
       relevantInfo: null
@@ -51,6 +52,7 @@ const ConnectionAlert = ({ alert }) => {
     await addDoc(newAlertRef, {
       timestamp: serverTimestamp(),
       alertType: 'deniedConnection',
+      title: 'Contact DENIED Invite',
       message: `${user.displayName} (${user.role}) has DENIED contact.`,
       isViewed: false,
       relevantInfo: null

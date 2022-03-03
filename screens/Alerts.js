@@ -1,4 +1,4 @@
-import { collection, onSnapshot, orderBy, query } from 'firebase/firestore'
+import { collection, doc, onSnapshot, orderBy, query, serverTimestamp, Timestamp, updateDoc, where } from 'firebase/firestore'
 import React, { useEffect, useState } from 'react'
 import { View, Text, FlatList, ScrollView, Dimensions } from 'react-native'
 import AlertItem from '../components/AlertItem'
@@ -7,6 +7,7 @@ import { db } from '../Firebase'
 import useAuth from '../hooks/useAuth'
 import tw from "tailwind-rn";
 import theme from "../styles/theme.style";
+import { useNavigation, useNavigationState } from '@react-navigation/native'
 
 
 /////
@@ -23,6 +24,7 @@ import theme from "../styles/theme.style";
 const { height } = Dimensions.get("window");
 
 const Alerts = () => {
+  const navigation = useNavigation();
   const { user } = useAuth();
   const [swiping, setSwiping] = useState(false);
   const [alerts, setAlerts] = useState([
@@ -75,7 +77,34 @@ const Alerts = () => {
   ]);
   const [screenHeight, setScreenHeight] = useState(0);
   const scrollEnabled = screenHeight > (height - 160);
-  // console.log(scrollEnabled);
+
+  // gets the index of the bottom tab navigation
+  const index = useNavigationState(state => state.index);
+  useEffect(() => {
+    //if on Alerts page, then the alert is viewed
+    if (index === 1) {
+      // console.log("checking isViewed", alerts, user.displayName);
+      const untouchedAlertTypes = ['newEvent', 'connection']
+      alerts.map(async (alert) => {
+        //if not an alert in the untouchedAlertTypes array above then the alert is viewed.
+        if (!untouchedAlertTypes.includes(alert.alertType) && alert.isViewed === false) {
+          console.log("alert.id", alert.id, "message", alert.message, "alertType", alert.alertType);
+          const alertRef = doc(db, 'users', user.uid, 'alerts', alert.id);
+          await updateDoc(alertRef, {
+            isViewed: true,
+            timestamp: serverTimestamp()
+          })
+          ////
+          //
+          // UPDATE ALERTS IN STATE 
+          //
+          ////
+        }
+      })
+    }
+
+  }, [index, alerts])
+
   useEffect(() =>
     onSnapshot(query(collection(db, 'users', user.uid, 'alerts'), orderBy('timestamp', 'desc')),
       (snapshot) => setAlerts(snapshot.docs.map((doc) => ({

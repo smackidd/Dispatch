@@ -30,10 +30,10 @@ const TaskCardInProgress = ({ event, task }) => {
     })
 
     if (task.isOrgAlert === true && event.organization) {
-      sendAlert('default', alertMessage, relevantInfo = null, event.organization.id);
+      sendAlert('default', "Task Completed", alertMessage, relevantInfo = null, event.organization.id);
     }
     if (task.isManagerAlert === true && event.manager) {
-      sendAlert('default', alertMessage, relevantInfo = null, event.manager.id);
+      sendAlert('default', "Task Completed", alertMessage, relevantInfo = null, event.manager.id);
     }
   }
 

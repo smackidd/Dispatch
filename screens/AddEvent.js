@@ -160,11 +160,12 @@ const AddEvent = () => {
     //   const taskRef = await addDoc(collection(db, 'events', docRef.id, 'tasks'), { ...task })
     //   await updateDoc(doc(db, 'events', docRef.id, 'tasks', taskRef.id), { id: taskRef.id })
     // })
-
+    console.log("freelancer", freelancer, "freelancer")
     const message = `${user.displayName} (${user.role}) has invited you to an event: ${data.title}, ${data.date} ${data.startTime}. Click to view.`;
     // FIX THIS NEXT LINE TO HANDLE ORGANIZATION INVITES!!!
     const relevantInfo = { eventId: docRef.id, usersMatched: [manager.id, freelancer.id] };
-    sendAlert('newEvent', message, relevantInfo, data.role.value.id);
+    sendAlert('newEvent', title = "New Event Invite", message, relevantInfo, data.role.value.id);
+
 
     navigation.goBack();
   }

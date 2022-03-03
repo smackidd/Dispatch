@@ -75,8 +75,6 @@ const AddContact = () => {
   //This function handles the selecting of the email ListItem
   /////
   const onSelect = async (data) => {
-    console.log(data);
-    console.log(user);
     ////
     // Must check if connection has already been made
     ////
@@ -91,6 +89,7 @@ const AddContact = () => {
         await addDoc(collection(db, 'users', data.id, 'alerts'), {
           timestamp: serverTimestamp(),
           alertType: type,
+          title: 'New Contact Invite',
           message: message,
           isViewed: false,
           contactId: contactId,

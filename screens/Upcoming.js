@@ -20,37 +20,7 @@ const Upcoming = ({ events }) => {
   const { user, logout } = useAuth();
   const [screenHeight, setScreenHeight] = useState(0);
   const scrollEnabled = screenHeight > (height - 160);
-  // const [events, setEvents] = useState([
-  // {
-  //   assignments: [null, 'gayPfuKmHcezPhZRuR5tE4BmuBA3', 'fJHSNvu4TrXwI9sXOGXy8of1wZk1'],
-  //   completedTime: null,
-  //   date: "01/29/2022",
-  //   endTime: "12:00",
-  //   freelancer: {
-  //     displayName: 'Steve m',
-  //     email: 'stevemackidd@gmail.com',
-  //     id: 'fJHSNvu4TrXwI9sXOGXy8of1wZk1',
-  //     photoURL: 'https://lh3.googleusercontent.com/a/AATXAJy1sBBJsS_6oNPOvTxTaSR6DFV8RUB5mkbJsHsQ=s96-c',
-  //     role: 'Freelancer'
-  //   },
-  //   isCompleted: false,
-  //   location: {
-  //     address: '1760 Douglas Glen Grove SE',
-  //     city: 'Calgary',
-  //     location: 'Home'
-  //   },
-  //   manager: {
-  //     displayName: 'Tester',
-  //     email: 'smackamaz1@gmail.com',
-  //     id: 'gayPfuKmHcezPhZRuR5tE4BmuBA3',
-  //     photoURL: null,
-  //     role: 'Manager'
-  //   },
-  //   organization: null,
-  //   startTime: "11:00",
-  //   title: 'Funeral: Mr. Soandso'
-  // },
-  // ]);
+
 
   //console.log("user", user, "upcoming");
 
