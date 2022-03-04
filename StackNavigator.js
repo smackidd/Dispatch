@@ -1,7 +1,10 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { doc, onSnapshot } from "firebase/firestore";
+import { useEffect, useState } from "react";
 //import React from 'react'
 import { View, Text } from 'react-native'
 import BottomTabNavigator from "./BottomTabNavigator";
+import { db } from "./Firebase";
 import useAuth from "./hooks/useAuth";
 import AddContact from "./screens/AddContact";
 import AddEvent from "./screens/AddEvent";
@@ -19,8 +22,13 @@ const Stack = createNativeStackNavigator();
 
 const StackNavigator = () => {
   const { user } = useAuth();
+  // const [unreadMessages, setUnreadMessages] = useState(25);
   // console.log(user);
+  // useEffect(() => (
+  //   onSnapshot(doc(db, 'users', user.uid), (snapshot) => setUnreadMessages(snapshot.data().setUnreadMessages))
+  // ), [db])
 
+  // console.log(unreadMessages);
   return (
     <Stack.Navigator
       screenOptions={{

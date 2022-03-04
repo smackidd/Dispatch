@@ -6,24 +6,26 @@ import TopTabNavigator from './TopTabNavigator';
 import Alerts from './screens/Alerts';
 import Messages from './screens/Messages';
 import theme from './styles/theme.style.js';
-import { collection, onSnapshot, query, where } from 'firebase/firestore';
+import { collection, doc, onSnapshot, query, where } from 'firebase/firestore';
 import { db } from './Firebase';
 import { Badge } from 'react-native-elements';
-import { useNavigation, useNavigationState } from '@react-navigation/native';
+import { useNavigation, useNavigationState, useRoute } from '@react-navigation/native';
 
 
 const Tab = createMaterialBottomTabNavigator();
 
-const BottomTabNavigator = () => {
+const BottomTabNavigator = ({ route }) => {
+  // const { params } = route;
+  // console.log("params", params.unreadMessages);
+  // const { unreadMessages } = params;
   const navigation = useNavigation();
   const { user } = useAuth();
   const [unreadAlerts, setUnreadAlerts] = useState(null);
+  const [unreadMessages, setUnreadMessages] = useState(5);
   const [alertPress, setAlertPress] = useState(0);
-  const [unreadMsgs, setUnreadMsgs] = useState(0);
-  // console.log("bottomTabNavigator")
 
   useEffect(() => {
-    let unsub;
+    let unsub, unsub2;
     const fetchUnread = () => {
       unsub = onSnapshot(query(collection(db, 'users', user.uid, 'alerts'),
         where('isViewed', '==', false)
@@ -32,25 +34,12 @@ const BottomTabNavigator = () => {
           setUnreadAlerts(snapshot.docs.length);
         }
       )
+      unsub2 = onSnapshot(doc(db, 'users', user.uid), (doc) => { setUnreadMessages(doc.data().unreadMessages) })
     }
     fetchUnread();
-    return unsub;
+    return unsub, unsub2;
   }, [db]);
 
-
-
-  // useEffect(() => {
-  //   console.log("tabPress")
-  //   const unsub = navigation.addListener('tabPress', (e) => {
-  //     setAlertPress(alertPress + 1);
-  //   })
-  //   return unsub;
-  // }, [navigation])
-
-  // const handleAlertPress = () => {
-  //   setAlertPress(alertPress + 1);
-  //   console.log("alertPress", alertPress);
-  // }
 
   return (
     <Tab.Navigator
@@ -72,9 +61,7 @@ const BottomTabNavigator = () => {
       />
       <Tab.Screen
         name="Alerts"
-        // component={Alerts}
         children={() => <Alerts />}
-        // tabPress={(e) => handleAlertPress()}
         options={{
           tabBarLabel: "Alerts",
           tabBarIcon: ({ focused }) => (
@@ -93,7 +80,12 @@ const BottomTabNavigator = () => {
         options={{
           tabBarLabel: "Messages",
           tabBarIcon: () => (
-            <MaterialCommunityIcons name="message" color={theme.ICON_COLORS} size={26} />
+            <>
+              <MaterialCommunityIcons name="message" color={theme.ICON_COLORS} size={26} />
+              {unreadMessages > 0 && (
+                <Badge status="error" value={unreadMessages} containerStyle={{ position: 'absolute', top: 0, left: 20, zIndex: -10 }} />
+              )}
+            </>
           )
         }}
       />

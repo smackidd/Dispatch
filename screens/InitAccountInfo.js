@@ -98,6 +98,7 @@ const InitAccountInfo = () => {
       displayName: displayName,
       role: role,
       photoURL: user.photoURL ? user.photoURL : null,
+      unreadMessages: 0,
       expoPushToken: expoPushToken,
       timestamp: serverTimestamp(),
     })

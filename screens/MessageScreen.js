@@ -6,7 +6,7 @@ import getMatchedUserInfo from '../lib/getMatchedUserInfo';
 import tw from "tailwind-rn";
 import SubHeader from '../components/SubHeader';
 import useAuth from '../hooks/useAuth';
-import { addDoc, collection, onSnapshot, orderBy, query, serverTimestamp } from 'firebase/firestore';
+import { addDoc, collection, doc, increment, onSnapshot, orderBy, query, serverTimestamp, updateDoc } from 'firebase/firestore';
 import { db } from '../Firebase';
 import SenderMessage from '../components/SenderMessage';
 import ReceiverMessage from '../components/ReceiverMessage';
@@ -42,13 +42,23 @@ const MessageScreen = () => {
     ), [matchDetails, db]
   );
 
-  const sendMessage = () => {
-    addDoc(collection(db, 'contacts', matchDetails.id, 'messages'), {
+  const sendMessage = async () => {
+    const messageRef = await addDoc(collection(db, 'contacts', matchDetails.id, 'messages'), {
       timestamp: serverTimestamp(),
+      isViewed: false,
       userId: user.uid,
       displayName: user.displayName,
       photoURL: matchDetails.users[user.uid].photoURL,
       message: input,
+    })
+
+    await updateDoc(doc(db, 'contacts', matchDetails.id, 'messages', messageRef.id), {
+      id: messageRef.id
+    })
+
+    // this updates the unread message counter of the other user
+    await updateDoc(doc(db, 'users', getMatchedUserInfo(matchDetails.users, user.uid).id), {
+      unreadMessages: increment(1)
     })
 
     setInput("");
@@ -73,7 +83,7 @@ const MessageScreen = () => {
               message.userId === user.uid ? (
                 <SenderMessage key={message.id} message={message} />
               ) : (
-                <ReceiverMessage key={message.id} message={message} />
+                <ReceiverMessage key={message.id} message={message} matchDetails={matchDetails} />
               )
             }
           />
