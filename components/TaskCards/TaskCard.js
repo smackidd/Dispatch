@@ -5,11 +5,22 @@ import theme from "../../styles/theme.style";
 import { ListItem } from 'react-native-elements';
 import { useRoute } from '@react-navigation/native';
 import useAuth from '../../hooks/useAuth';
+import moment from 'moment';
+import Countdown from '../Countdown';
 
 const TaskCard = ({ inProgress = false, task }) => {
   const { user } = useAuth();
   // console.log("task", task)
   // console.log("inProgress", inProgress)
+  // console.log("expCompletionTime", moment(task.expCompletionTime).milliseconds());
+  // const currentTime = moment().format('h:mm a');
+  // const eventTime = task.expCompletionTime;
+  // const eventTime = 1366549200;
+  // const currentTime = 1366547400;
+  // const diffTime = eventTime - currentTime;
+  // const timeDiff = moment.duration(diffTime * 1000, 'milliseconds');
+
+  // console.log(task.expCompletionTime)
 
   return (
     inProgress ? (
@@ -21,7 +32,10 @@ const TaskCard = ({ inProgress = false, task }) => {
           </View>
           <View style={tw("flex-row mb-2")}>
             <Text style={tw("flex-1")}></Text>
-            <Text style={[tw("flex-none font-bold"), styles.title]}>time remaining</Text>
+            <Text style={[tw("flex-none font-bold"), styles.title]}>
+              {/* <Countdown eventTime={moment(task.expCompletionTime).milliseconds()} interval={1000} /> */}
+              <Countdown eventTime={moment(moment().format('YYYYMMDD') + " " + task.expCompletionTime, 'YYYYMMDD hh:mm a').format('x')} />
+            </Text>
           </View>
 
           <View style={tw("flex-row")}>

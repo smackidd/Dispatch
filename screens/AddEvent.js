@@ -40,7 +40,8 @@ const AddEvent = () => {
   const [dateOpen, setDateOpen] = useState(false);
   const [date, setDate] = useState("");
   const [startTimeOpen, setStartTimeOpen] = useState(false);
-  const [startTime, setStartTime] = useState("");
+  const [startTime, setStartTime] = useState('');
+  const [startTimeFormatted, setStartTimeFormatted] = useState(moment().format('h:mm a'));
   const [endTimeOpen, setEndTimeOpen] = useState(false);
   const [endTime, setEndTime] = useState("");
   const [roleData, setRoleData] = useState([]);
@@ -55,6 +56,7 @@ const AddEvent = () => {
       isAlert: true,
       isOrgAlert: true,
       isManagerAlert: true,
+      relativeTime: { hours: -3, min: 0 },
       expCompletionTime: 'T -3:00',
       isCompleted: false,
       completedTime: null,
@@ -65,11 +67,14 @@ const AddEvent = () => {
       isAlert: false,
       isOrgAlert: false,
       isManagerAlert: true,
+      relativeTime: { hours: -1, min: 0 },
       expCompletionTime: 'T -1:00',
       isCompleted: false,
       completedTime: null,
     }
   ])
+  console.log("startTimeFormatted", startTimeFormatted);
+  console.log("expCompletionTime", tasks[0].expCompletionTime);
 
   useEffect(() => {
     const fetchDropDownData = async () => {
@@ -164,7 +169,7 @@ const AddEvent = () => {
     const message = `${user.displayName} (${user.role}) has invited you to an event: ${data.title}, ${data.date} ${data.startTime}. Click to view.`;
     // FIX THIS NEXT LINE TO HANDLE ORGANIZATION INVITES!!!
     const relevantInfo = { eventId: docRef.id, usersMatched: [manager.id, freelancer.id] };
-    sendAlert('newEvent', title = "New Event Invite", message, relevantInfo, data.role.value.id);
+    sendAlert('newEvent', "New Event Invite", message, relevantInfo, data.role.value.id);
 
 
     navigation.goBack();
@@ -216,7 +221,7 @@ const AddEvent = () => {
                       containerStyle={styles.textInput}
                       placeholder="Select date..."
                     />
-                    {dateOpen && (Platform.OS === 'ios' ? (
+                    {dateOpen === true && (Platform.OS === 'ios' ? (
                       <Overlay
                         backdropStyle={{ flex: 1, padding: 5, backgroundColor: theme.PRIMARY_BACKGROUND, opacity: 0.8 }}
                         overlayStyle={{ backgroundColor: theme.PRIMARY_BACKGROUND_200, borderRadius: 10 }}
@@ -246,11 +251,14 @@ const AddEvent = () => {
                         mode="date"
                         value={date ? date : new Date()}
                         display="default"
+                        // onSubmit={() => setDateOpen(false)}
+
+                        // onSelectItem={() => setDateOpen(false)}
                         onChange={(event, date) => {
                           const formattedDate = moment(date).format('L');
                           setDate(date)
                           setDateOpen(false)
-                          console.log("datepicker")
+                          console.log("event", event)
                           if (event.type === "dismissed") onChange()
                           else onChange(formattedDate)
                         }}
@@ -314,14 +322,21 @@ const AddEvent = () => {
                         value={startTime ? startTime : new Date()}
                         minuteInterval={15}
                         display="default"
+                        onSelectItem={() => setStartTimeOpen(false)}
                         onChange={(event, time) => {
-                          // console.log("time: ", time.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }))
-                          // const formattedTime = time.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
                           const formattedTime = moment(time).format('h:mm a')
-                          console.log(formattedTime);
                           setStartTime(time)
+                          setStartTimeFormatted(formattedTime);
+
+                          // updates tasks expCompletion time relative to start time
+                          if (tasks) {
+                            let newTasks = tasks;
+                            newTasks.map((task) => {
+                              task.expCompletionTime = moment(formattedTime, 'h:mm a').add(task.relativeTime.hours, 'hours').add(task.relativeTime.min, 'minutes').format('h:mm a')
+                            })
+                            setTasks(newTasks);
+                          }
                           setStartTimeOpen(false)
-                          // onChange(formattedTime)
                           if (event.type === "dismissed") onChange()
                           else onChange(formattedTime)
                         }}
@@ -383,6 +398,7 @@ const AddEvent = () => {
                         value={endTime ? endTime : new Date()}
                         minuteInterval={15}
                         display="default"
+                        onSelectItem={() => setEndTimeOpen(false)}
                         onChange={(event, time) => {
                           // console.log("time: ", time.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }))
                           // const formattedTime = time.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
