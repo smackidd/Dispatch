@@ -28,13 +28,14 @@ const TaskCard = ({ inProgress = false, task }) => {
         <View>
           <View style={tw("flex-row mb-2")}>
             <Text style={[tw("flex-1 font-bold"), styles.title]}>{task.taskName}</Text>
-            <Text style={[tw("flex-none font-bold"), styles.title]}>{task.expCompletionTime}</Text>
+            <Text style={[tw("flex-none font-bold"), styles.title]}>{moment(task.expCompletionTime, 'MM/DD/YYYY hh:mm a').format('hh:mm a')}</Text>
           </View>
           <View style={tw("flex-row mb-2")}>
             <Text style={tw("flex-1")}></Text>
             <Text style={[tw("flex-none font-bold"), styles.title]}>
               {/* <Countdown eventTime={moment(task.expCompletionTime).milliseconds()} interval={1000} /> */}
-              <Countdown eventTime={moment(moment().format('YYYYMMDD') + " " + task.expCompletionTime, 'YYYYMMDD hh:mm a').format('x')} />
+              {/* <Countdown eventTime={moment(moment().format('YYYYMMDD') + " " + task.expCompletionTime, 'YYYYMMDD hh:mm a').format('x')} /> */}
+              <Countdown eventTime={moment(task.expCompletionTime, 'MM/DD/YYYY hh:mm a').format('x')} />
             </Text>
           </View>
 

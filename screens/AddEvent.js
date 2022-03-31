@@ -73,8 +73,20 @@ const AddEvent = () => {
       completedTime: null,
     }
   ])
-  console.log("startTimeFormatted", startTimeFormatted);
-  console.log("expCompletionTime", tasks[0].expCompletionTime);
+  // console.log("startTimeFormatted", startTimeFormatted);
+  // console.log("expCompletionTime", tasks[0].expCompletionTime);
+
+  const taskTimeFormat = (date, start) => {
+    let newTasks = tasks;
+    const startDate = date + " " + start;
+    console.log(startDate)
+    newTasks.map((task) => {
+      // console.log("expCompletionTime", moment(startDate, 'MM/DD/YYYY h:mm a').add(task.relativeTime.hours, 'hours').add(task.relativeTime.min, 'minutes').format('MM/DD/YYYY h:mm a'))
+      task.expCompletionTime = moment(startDate, 'MM/DD/YYYY h:mm a').add(task.relativeTime.hours, 'hours').add(task.relativeTime.min, 'minutes').format('MM/DD/YYYY h:mm a')
+      //   console.log("task.expCompletionTime", task.expCompletionTime);
+    })
+    setTasks(newTasks);
+  }
 
   useEffect(() => {
     const fetchDropDownData = async () => {
@@ -136,6 +148,10 @@ const AddEvent = () => {
     const managerId = manager ? manager.id : null;
     const freelancer = user.role === 'Organization' ? null : data.role.value;
     const freelancerId = freelancer ? freelancer.id : null;
+
+    //update task completion time format to include date
+    taskTimeFormat(data.date, data.startTime);
+
     const docRef = await addDoc(collection(db, 'events'), {
       title: data.title,
       date: data.date,
@@ -165,7 +181,7 @@ const AddEvent = () => {
     //   const taskRef = await addDoc(collection(db, 'events', docRef.id, 'tasks'), { ...task })
     //   await updateDoc(doc(db, 'events', docRef.id, 'tasks', taskRef.id), { id: taskRef.id })
     // })
-    console.log("freelancer", freelancer, "freelancer")
+    //console.log("freelancer", freelancer, "freelancer")
     const message = `${user.displayName} (${user.role}) has invited you to an event: ${data.title}, ${data.date} ${data.startTime}. Click to view.`;
     // FIX THIS NEXT LINE TO HANDLE ORGANIZATION INVITES!!!
     const relevantInfo = { eventId: docRef.id, usersMatched: [manager.id, freelancer.id] };
