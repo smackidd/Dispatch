@@ -6,23 +6,30 @@ const calculateDuration = (eventTime) => {
   moment.duration(Math.max(eventTime - (Math.floor(new Date().getTime())), 0), 'seconds')
 }
 
+const formatTimeLeft = (leftTime) => {
+  const timeLeft = moment.duration(leftTime, 'milliseconds');
+  const hours = timeLeft.hours();
+  let minutes = Math.abs(timeLeft.minutes())
+  let seconds = Math.abs(timeLeft.seconds())
+  if (minutes < 10) minutes = '0' + minutes;
+  if (seconds < 10) seconds = '0' + seconds;
+  return hours + ":" + minutes + ":" + seconds;
+}
+
 const Countdown = ({ eventTime, interval }) => {
   const [remainingTime, setRemainingTime] = useState(0);
   // console.log("eventTime", eventTime);
 
   useEffect(() => {
     const intervalId = setInterval(() => { updateRemainingTime(eventTime) }, 1000);
-    // updateRemainingTime(eventTime)
-    // console.log(eventTime);
-    // console.log("useEffect")
     return () => clearInterval(intervalId);
   }, [eventTime])
 
   const updateRemainingTime = (endTime) => {
     const timeNow = moment().format('x')
     const leftTime = endTime - timeNow;
-    const timeLeft = moment.duration(leftTime, 'milliseconds');
-    setRemainingTime(timeLeft.hours() + ":" + Math.abs(timeLeft.minutes()) + ":" + Math.abs(timeLeft.seconds()))
+    // if (leftTime < 1) sendAlerts();
+    setRemainingTime(formatTimeLeft(leftTime));
 
   }
 

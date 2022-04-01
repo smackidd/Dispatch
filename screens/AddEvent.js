@@ -112,18 +112,10 @@ const AddEvent = () => {
             console.log("roleData", roleItems)
           })
 
-        // snapshot.docs
-        //   .filter((doc) => getMatchedUserInfo(doc.data().users, user.uid).role == "Freelancer")
-        //   .map((doc) => setRoleData([...roleData, { label: getMatchedUserInfo(doc.users, user.uid).displayName, value: getMatchedUserInfo(doc.users, user.uid).id }]))
 
-
-        // )
-        // .then((doc) => console.log(roleItems))
-        // await console.log("role data", roleData)
         await getDocs(collection(db, 'users', user.uid, 'eventTemplates'),
           (snapshot) => { if (snapshot.exists()) setTemplateData(snapshot.docs.map((doc) => ([...templateData, doc.data().templateName]))) })
 
-        //console.log(roleItems);
       }
 
     }
