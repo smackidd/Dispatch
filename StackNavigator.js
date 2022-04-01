@@ -16,6 +16,7 @@ import LoginScreen from "./screens/LoginScreen";
 import MessageScreen from "./screens/MessageScreen";
 import Upcoming from "./screens/Upcoming";
 import UpdateEvent from "./screens/UpdateEvent";
+import UserProfile from "./screens/UserProfile";
 import TopTabNavigator from "./TopTabNavigator";
 
 const Stack = createNativeStackNavigator();
@@ -40,6 +41,7 @@ const StackNavigator = () => {
           <Stack.Group>
             <Stack.Screen name="Dispatch" component={BottomTabNavigator} />
             <Stack.Screen name="MessageScreen" component={MessageScreen} />
+            <Stack.Screen name="UserProfile" component={UserProfile} />
           </Stack.Group>
           <Stack.Group screenOptions={{ presentation: 'modal' }}>
             <Stack.Screen name="InitAccountInfo" component={InitAccountInfo} />

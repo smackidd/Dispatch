@@ -14,7 +14,7 @@ const Header = () => {
       <TouchableOpacity style={tw("")}>
         <Image style={tw("h-16 w-16 rounded-full")} source={require('../assets/DispatchLogo.png')} />
       </TouchableOpacity>
-      <TouchableOpacity style={tw("")} onPress={() => navigation.navigate('InitAccountInfo')}>
+      <TouchableOpacity style={tw("")} onPress={() => navigation.navigate('UserProfile')}>
         <Image style={tw("h-10 w-10 rounded-full")} source={{ uri: user.photoURL }} />
       </TouchableOpacity>
     </View>
