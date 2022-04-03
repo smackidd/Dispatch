@@ -5,7 +5,7 @@ import { View, Text, StyleSheet, TextInput, Picker, TouchableOpacity, ScrollView
 import tw from 'tailwind-rn';
 import useAuth from '../hooks/useAuth';
 import theme from '../styles/theme.style.js';
-import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
+import { addDoc, collection, doc, serverTimestamp, setDoc } from 'firebase/firestore';
 import { db } from '../Firebase';
 import { useNavigation } from '@react-navigation/native';
 import { useForm, Controller } from "react-hook-form";
@@ -48,7 +48,7 @@ const InitAccountInfo = () => {
     // responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
     //   console.log(response);
     // });
-
+    console.log(expoPushToken);
     return () => {
       Notifications.removeNotificationSubscription(notificationListener.current);
       Notifications.removeNotificationSubscription(responseListener.current);
@@ -103,17 +103,47 @@ const InitAccountInfo = () => {
       timestamp: serverTimestamp(),
     })
       .then((data) => {
-
+        if (role === "Manager") {
+          addDoc(collection(db, 'users', user.uid, 'taskTemplates'), {
+            name: 'default',
+            timestamp: serverTimestamp(),
+            tasks: [
+              {
+                taskId: 1,
+                taskName: 'Confirm Event',
+                isAlert: true,
+                isOrgAlert: true,
+                isManagerAlert: true,
+                relativeTime: { hours: -3, min: 0 },
+                expCompletionTime: 'T -3:00',
+                isCompleted: false,
+                completedTime: null,
+              },
+              {
+                taskId: 2,
+                taskName: 'Arrival',
+                isAlert: false,
+                isOrgAlert: false,
+                isManagerAlert: true,
+                relativeTime: { hours: -1, min: 0 },
+                expCompletionTime: 'T -1:00',
+                isCompleted: false,
+                completedTime: null,
+              }
+            ]
+          })
+        }
+      })
+      .then((data) => {
         navigation.navigate("Dispatch", {
           displayName, role, photoURL: user.photoURL
-        });
+        })
       })
       .catch((error) => {
         alert(error.message);
       });
 
-    //setNameValue(data.displayName)
-    console.log(displayName);
+
 
   };
 

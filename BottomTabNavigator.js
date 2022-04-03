@@ -21,7 +21,7 @@ const BottomTabNavigator = ({ route }) => {
   const navigation = useNavigation();
   const { user } = useAuth();
   const [unreadAlerts, setUnreadAlerts] = useState(null);
-  const [unreadMessages, setUnreadMessages] = useState(5);
+  const [unreadMessages, setUnreadMessages] = useState(null);
   const [alertPress, setAlertPress] = useState(0);
 
   useEffect(() => {
@@ -34,7 +34,7 @@ const BottomTabNavigator = ({ route }) => {
           setUnreadAlerts(snapshot.docs.length);
         }
       )
-      unsub2 = onSnapshot(doc(db, 'users', user.uid), (doc) => { setUnreadMessages(doc.data().unreadMessages) })
+      unsub2 = onSnapshot(doc(db, 'users', user.uid), (doc) => { if (doc.exists()) setUnreadMessages(doc.data().unreadMessages) })
     }
     fetchUnread();
     return unsub, unsub2;

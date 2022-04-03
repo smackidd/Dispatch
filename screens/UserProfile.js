@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import useAuth from '../hooks/useAuth';
-import Profile from '../components/Profile';
-import TaskTemplates from '../components/TaskTemplates';
+import Profile from '../components/Profile/Profile';
+import TaskTemplates from '../components/Profile/TaskTemplates';
 import Header from '../components/Header';
 import theme from '../styles/theme.style.js';
 
@@ -45,7 +45,7 @@ const UserProfile = () => {
 
         >
           <Tab.Screen name="Profile" children={() => <Profile />} />
-          <Tab.Screen name="TaskTemplates" children={() => <TaskTemplates />} />
+          <Tab.Screen name="Task Templates" children={() => <TaskTemplates />} />
 
         </Tab.Navigator>
       ) : (
