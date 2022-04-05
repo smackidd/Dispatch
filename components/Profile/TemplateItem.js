@@ -2,10 +2,13 @@ import { View, Text } from 'react-native'
 import React from 'react'
 import { Icon, ListItem } from 'react-native-elements'
 import theme from "../../styles/theme.style";
+import { useNavigation } from '@react-navigation/native';
 
 const TemplateItem = ({ template }) => {
+  const navigation = useNavigation();
+
   const handleEdit = () => {
-    console.log("handleEdit")
+    navigation.navigate('EditTaskTemplate', { template });
   }
 
   const handleDelete = () => {

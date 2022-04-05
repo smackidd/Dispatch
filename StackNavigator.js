@@ -9,6 +9,7 @@ import useAuth from "./hooks/useAuth";
 import AddContact from "./screens/AddContact";
 import AddEvent from "./screens/AddEvent";
 import Completed from "./screens/Completed";
+import EditTaskTemplate from "./screens/EditTaskTemplate";
 import EventModal from "./screens/EventModal";
 import InitAccountInfo from "./screens/InitAccountInfo";
 import InProgress from "./screens/InProgress";
@@ -47,6 +48,7 @@ const StackNavigator = () => {
             <Stack.Screen name="InitAccountInfo" component={InitAccountInfo} />
             <Stack.Screen name="AddContact" component={AddContact} />
             <Stack.Screen name="AddEvent" component={AddEvent} />
+            <Stack.Screen name="EditTaskTemplate" component={EditTaskTemplate} />
             <Stack.Screen name="UpdateEvent" component={UpdateEvent} />
             <Stack.Screen name="EventModal" component={EventModal} />
           </Stack.Group>
